@@ -2,12 +2,21 @@
   "$schema": "https://mintlify.com/schema.json",
   "name": "SlotoLands",
   "logo": {
-    "dark": "/logo/cropped-logo-dark.png",
-    "light": "/logo/cropped-logo.png"
+    "dark": "/logo/dark.png",
+    "light": "/logo/light.png"
   },
   "theme": "venus",
   "favicon": "/favicon.svg",
-  "openapi": "/swagger.json",
+  "layout": "solidSidenav",
+  "modeToggle": {
+    "default": "dark"
+  },
+  "search": {
+    "location": "side"
+  },
+  "topbar": {
+    "style": "gradient"
+  },
   "colors": {
     "primary": "#0D9373",
     "light": "#07C983",
@@ -20,7 +29,7 @@
   "topbarLinks": [
     {
       "name": "Support",
-      "url": "mailto:support@sloto-lands.com"
+      "url": "mailto:teamslotoland@gmail.com"
     }
   ],
   "tabs": [
@@ -31,39 +40,21 @@
   ],
   "anchors": [
     {
-      "name": "Documentation",
-      "icon": "book-open-cover",
-      "url": "https://mintlify.com/docs"
-    },
-    {
-      "name": "Community",
-      "icon": "slack",
-      "url": "https://mintlify.com/community"
-    },
-    {
-      "name": "Blog",
+      "name": "Games",
       "icon": "newspaper",
-      "url": "https://mintlify.com/blog"
+      "url": "https://sloto-lands.com/en/games/"
+    },
+    {
+      "name": "Feedback",
+      "icon": "comment",
+      "url": "https://sloto-lands.com/en/contacts/"
     }
   ],
   "navigation": [
     {
       "group": "Get Started",
       "pages": [
-        "introduction",
-        "quickstart",
-        "development"
-      ]
-    },
-    {
-      "group": "Essentials",
-      "pages": [
-        "essentials/markdown",
-        "essentials/code",
-        "essentials/images",
-        "essentials/settings",
-        "essentials/navigation",
-        "essentials/reusable-snippets"
+        "introduction"
       ]
     },
     {
@@ -73,17 +64,24 @@
       ]
     },
     {
-      "group": "Endpoint Examples",
+      "group": "Integration endpoints",
       "pages": [
-        "api-reference/endpoint/get",
-        "api-reference/endpoint/create",
-        "api-reference/endpoint/delete"
+        "api-reference/client/get-balance",
+        "api-reference/client/bet-request",
+        "api-reference/client/win-request",
+        "api-reference/client/refund-request"
+      ]
+    },
+    {
+      "group": "Provider resources",
+      "pages": [
+        "api-reference/form/launch"
       ]
     }
   ],
   "footerSocials": {
-    "x": "https://x.com/mintlify",
-    "github": "https://github.com/mintlify",
-    "linkedin": "https://www.linkedin.com/company/mintsearch"
+    "x": "https://twitter.com/slotoland",
+    "skype": "https://join.skype.com/invite/LvXPc3IcMCYu",
+    "linkedin": "https://www.linkedin.com/company/sloto-land"
   }
 }

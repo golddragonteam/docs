@@ -1,72 +1,155 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "OpenAPI Plant Store",
-    "description": "A sample API that uses a plant store as an example to demonstrate features in the OpenAPI specification",
-    "license": {
-      "name": "MIT"
-    },
-    "version": "1.0.0"
+    "title": "OpenAPI definition",
+    "version": "v0"
   },
   "servers": [
     {
-      "url": "http://sandbox.mintlify.com"
-    }
-  ],
-  "security": [
-    {
-      "bearerAuth": []
+      "url": "https://provider-site.com",
+      "description": "Generated server url"
     }
   ],
   "paths": {
-    "/plants": {
+    "/launch/{game}": {
+      "description": "Game page. Open game",
       "get": {
-        "description": "Returns all plants from the system that the user has access to",
+        "summary": "",
+        "operationId": "launch game",
         "parameters": [
           {
-            "name": "limit",
-            "in": "query",
-            "description": "The maximum number of results to return",
+            "name": "game",
+            "in": "path",
+            "required": true,
             "schema": {
-              "type": "integer",
-              "format": "int32"
+              "type": "string"
+            }
+          },
+          {
+            "name": "partner",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "land",
+            "description": "en | ru | ua. Default en",
+            "in": "query",
+            "schema": {
+              "type": "string"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Plant response",
+            "description": "OK",
             "content": {
-              "application/json": {
+              "text/html": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Plant"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
+                  "description": "Html page with game frame"
+                },
+                "example": "<html></html>"
               }
             }
           }
         }
-      },
-      "post": {
-        "description": "Creates a new plant in the store",
+      }
+    },
+    "/balance": {
+      "description": "Get session balance",
+      "get": {
+        "parameters": [],
         "requestBody": {
-          "description": "Plant to add to the store",
+          "content": {
+
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/bet": {
+      "description": "Request bet",
+      "get": {
+        "parameters": [],
+        "requestBody": {
+          "content": {
+
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/win": {
+      "description": "Payout by round",
+      "get": {
+        "parameters": [],
+        "requestBody": {
+          "content": {
+
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/refund": {
+      "description": "Refund error bet",
+      "get": {
+        "parameters": [],
+        "requestBody": {
+          "content": {
+
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/projects/{merchant}": {
+      "put": {
+        "tags": [
+          "project-controller"
+        ],
+        "operationId": "updateProject",
+        "parameters": [
+          {
+            "name": "merchant",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NewPlant"
+                "$ref": "#/components/schemas/UpdateProjectDto"
               }
             }
           },
@@ -74,21 +157,11 @@
         },
         "responses": {
           "200": {
-            "description": "plant response",
+            "description": "OK",
             "content": {
-              "application/json": {
+              "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/Plant"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/ProjectDto"
                 }
               }
             }
@@ -96,32 +169,165 @@
         }
       }
     },
-    "/plants/{id}": {
-      "delete": {
-        "description": "Deletes a single plant based on the ID supplied",
+    "/api/projects/{merchant}/configs/math": {
+      "get": {
+        "tags": [
+          "project-controller"
+        ],
+        "operationId": "getMathConfig",
         "parameters": [
           {
-            "name": "id",
+            "name": "merchant",
             "in": "path",
-            "description": "ID of plant to delete",
             "required": true,
             "schema": {
-              "type": "integer",
-              "format": "int64"
+              "type": "string"
             }
           }
         ],
         "responses": {
-          "204": {
-            "description": "Plant deleted",
-            "content": {}
-          },
-          "400": {
-            "description": "unexpected error",
+          "200": {
+            "description": "OK",
             "content": {
-              "application/json": {
+              "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/MathConfigDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "project-controller"
+        ],
+        "operationId": "updateMathConfig",
+        "parameters": [
+          {
+            "name": "merchant",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MathConfigDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/projects/{merchant}/configs/jackpot": {
+      "get": {
+        "tags": [
+          "project-controller"
+        ],
+        "operationId": "getJackpotConfig",
+        "parameters": [
+          {
+            "name": "merchant",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/JackpotConfigDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "project-controller"
+        ],
+        "operationId": "updateJackpotConfig",
+        "parameters": [
+          {
+            "name": "merchant",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JackpotConfigDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/sessions": {
+      "post": {
+        "tags": [
+          "api-controller"
+        ],
+        "operationId": "createSession",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSessionDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionDto"
                 }
               }
             }
@@ -132,63 +338,1769 @@
   },
   "components": {
     "schemas": {
-      "Plant": {
-        "required": [
-          "name"
-        ],
+      "UpdateUserDto": {
         "type": "object",
         "properties": {
-          "name": {
-            "description": "The name of the plant",
+          "password": {
             "type": "string"
           },
-          "tag": {
-            "description": "Tag to specify the type",
+          "avatar": {
+            "type": "string"
+          },
+          "roles": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "UserDto": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "avatar": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "roles": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "UpdateProjectDto": {
+        "type": "object",
+        "properties": {
+          "callbackHost": {
+            "type": "string"
+          },
+          "blocked": {
+            "type": "boolean"
+          },
+          "secretKey": {
             "type": "string"
           }
         }
       },
-      "NewPlant": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Plant"
-          },
-          {
-            "required": [
-              "id"
-            ],
-            "type": "object",
-            "properties": {
-              "id": {
-                "description": "Identification number of the plant",
-                "type": "integer",
-                "format": "int64"
-              }
-            }
-          }
-        ]
-      },
-      "Error": {
-        "required": [
-          "error",
-          "message"
-        ],
+      "AdapterProxyConfig": {
         "type": "object",
         "properties": {
-          "error": {
+          "enabled": {
+            "type": "boolean"
+          },
+          "host": {
+            "type": "string"
+          },
+          "port": {
             "type": "integer",
             "format": "int32"
           },
-          "message": {
+          "username": {
+            "type": "string"
+          },
+          "password": {
             "type": "string"
           }
         }
-      }
-    },
-    "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "scheme": "bearer"
+      },
+      "JackpotConfig": {
+        "type": "object",
+        "properties": {
+          "minNominal": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "maxNominal": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "percent": {
+            "type": "number"
+          },
+          "reserve": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "threshold": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "MathConfig": {
+        "type": "object",
+        "properties": {
+          "percent": {
+            "type": "number"
+          },
+          "buyBonusPercentDelta": {
+            "type": "number"
+          },
+          "demoPercent": {
+            "type": "number"
+          },
+          "maxWin": {
+            "type": "number"
+          },
+          "volatilityMode": {
+            "type": "string",
+            "enum": [
+              "BASE",
+              "WAVE",
+              "PEAK",
+              "SUPER_WAVE",
+              "TEST",
+              "START",
+              "MIDDLE",
+              "BONUS"
+            ]
+          },
+          "riskPercent": {
+            "type": "number"
+          },
+          "maxFactor": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "PlatformConfig": {
+        "type": "object",
+        "properties": {
+          "gameBoardCode": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "drumEnabled": {
+            "type": "boolean"
+          },
+          "skinColor": {
+            "type": "string"
+          },
+          "lowQuality": {
+            "type": "boolean"
+          },
+          "fastSpin": {
+            "type": "boolean"
+          },
+          "lotteryStyle": {
+            "type": "boolean"
+          },
+          "bigWinEnabled": {
+            "type": "boolean"
+          },
+          "buyBonusEnabled": {
+            "type": "boolean"
+          },
+          "giftSpinEnabled": {
+            "type": "boolean"
+          },
+          "language": {
+            "type": "string"
+          },
+          "host": {
+            "type": "string"
+          }
+        }
+      },
+      "ProjectConfig": {
+        "type": "object",
+        "properties": {
+          "retryBackOffTime": {
+            "type": "object",
+            "properties": {
+              "seconds": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "nano": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "negative": {
+                "type": "boolean"
+              },
+              "units": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "dateBased": {
+                      "type": "boolean"
+                    },
+                    "timeBased": {
+                      "type": "boolean"
+                    },
+                    "duration": {
+                      "type": "object",
+                      "properties": {
+                        "seconds": {
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        "nano": {
+                          "type": "integer",
+                          "format": "int32"
+                        },
+                        "negative": {
+                          "type": "boolean"
+                        },
+                        "zero": {
+                          "type": "boolean"
+                        }
+                      }
+                    },
+                    "durationEstimated": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              },
+              "zero": {
+                "type": "boolean"
+              }
+            }
+          },
+          "adapterProxyConfig": {
+            "$ref": "#/components/schemas/AdapterProxyConfig"
+          },
+          "preReleaseGameChannel": {
+            "type": "boolean"
+          },
+          "jackpotEnabled": {
+            "type": "boolean"
+          },
+          "jackpotConfig": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/JackpotConfig"
+            }
+          },
+          "games": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "gamePanel": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "urlParamsByGame": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "denominationList": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "defaultDenomination": {
+            "type": "number"
+          },
+          "defaultBet": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "defaultLanguage": {
+            "type": "string"
+          },
+          "additionalPlatformFields": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object"
+            }
+          },
+          "highQuality": {
+            "type": "boolean"
+          },
+          "mathConfig": {
+            "$ref": "#/components/schemas/MathConfig"
+          },
+          "currencyConfig": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProjectCurrencyConfig"
+            }
+          },
+          "platform": {
+            "$ref": "#/components/schemas/PlatformConfig"
+          }
+        }
+      },
+      "ProjectCurrencyConfig": {
+        "type": "object",
+        "properties": {
+          "currency": {
+            "type": "string",
+            "enum": [
+              "AED",
+              "AFN",
+              "ALL",
+              "AMD",
+              "ANG",
+              "AOA",
+              "ARS",
+              "AUD",
+              "AWG",
+              "AZN",
+              "BAM",
+              "BBD",
+              "BDT",
+              "BGN",
+              "BHD",
+              "BIF",
+              "BMD",
+              "BND",
+              "BOB",
+              "BOV",
+              "BRL",
+              "BSD",
+              "BTN",
+              "BWP",
+              "BYR",
+              "BZD",
+              "CAD",
+              "CDF",
+              "CHE",
+              "CHF",
+              "CHW",
+              "CLF",
+              "CLP",
+              "CNY",
+              "COP",
+              "COU",
+              "CRC",
+              "CUC",
+              "CUP",
+              "CVE",
+              "CZK",
+              "DJF",
+              "DKK",
+              "DOP",
+              "DZD",
+              "EGP",
+              "ERN",
+              "ETB",
+              "EUR",
+              "FJD",
+              "FKP",
+              "GBP",
+              "GEL",
+              "GHS",
+              "GIP",
+              "GMD",
+              "GNF",
+              "GTQ",
+              "GYD",
+              "HKD",
+              "HNL",
+              "HRK",
+              "HTG",
+              "HUF",
+              "IDR",
+              "ILS",
+              "INR",
+              "IQD",
+              "IRR",
+              "ISK",
+              "JMD",
+              "JOD",
+              "JPY",
+              "KES",
+              "KGS",
+              "KHR",
+              "KMF",
+              "KPW",
+              "KRW",
+              "KWD",
+              "KYD",
+              "KZT",
+              "LAK",
+              "LBP",
+              "LKR",
+              "LRD",
+              "LSL",
+              "LTL",
+              "LVL",
+              "LYD",
+              "MAD",
+              "MDL",
+              "MGA",
+              "MKD",
+              "MMK",
+              "MNT",
+              "MOP",
+              "MRO",
+              "MUR",
+              "MVR",
+              "MWK",
+              "MXN",
+              "MXV",
+              "MYR",
+              "MZN",
+              "NAD",
+              "NGN",
+              "NIO",
+              "NOK",
+              "NPR",
+              "NZD",
+              "OMR",
+              "PAB",
+              "PEN",
+              "PGK",
+              "PHP",
+              "PKR",
+              "PLN",
+              "PYG",
+              "QAR",
+              "RON",
+              "RSD",
+              "RUB",
+              "RWF",
+              "SAR",
+              "SBD",
+              "SCR",
+              "SDG",
+              "SEK",
+              "SGD",
+              "SHP",
+              "SLL",
+              "SOS",
+              "SRD",
+              "SSP",
+              "STD",
+              "SYP",
+              "SZL",
+              "THB",
+              "TJS",
+              "TMT",
+              "TND",
+              "TOP",
+              "TRY",
+              "TTD",
+              "TWD",
+              "TZS",
+              "UAH",
+              "UGX",
+              "USD",
+              "USN",
+              "USS",
+              "UYI",
+              "UYU",
+              "UZS",
+              "VEF",
+              "VES",
+              "VND",
+              "VUV",
+              "WST",
+              "XAF",
+              "XAG",
+              "XAU",
+              "XBA",
+              "XBB",
+              "XBC",
+              "XBD",
+              "XCD",
+              "XDR",
+              "XFU",
+              "XOF",
+              "XPD",
+              "XPF",
+              "XPT",
+              "XTS",
+              "XXX",
+              "YER",
+              "ZAR",
+              "ZMW"
+            ]
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "defaultBet": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "defaultDenomination": {
+            "type": "number"
+          },
+          "denominationList": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "maxWin": {
+            "type": "number"
+          }
+        }
+      },
+      "ProjectDto": {
+        "type": "object",
+        "properties": {
+          "secretKey": {
+            "type": "string"
+          },
+          "callbackHost": {
+            "type": "string"
+          },
+          "merchantId": {
+            "type": "string"
+          },
+          "config": {
+            "$ref": "#/components/schemas/ProjectConfig"
+          }
+        }
+      },
+      "MathConfigDto": {
+        "type": "object",
+        "properties": {
+          "percent": {
+            "type": "number"
+          },
+          "demoPercent": {
+            "type": "number"
+          },
+          "maxWin": {
+            "type": "number"
+          },
+          "volatilityMode": {
+            "type": "string",
+            "enum": [
+              "BASE",
+              "WAVE",
+              "PEAK",
+              "SUPER_WAVE",
+              "TEST",
+              "START",
+              "MIDDLE",
+              "BONUS"
+            ]
+          },
+          "buyBonusPercentDelta": {
+            "type": "number"
+          },
+          "maxFactor": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "riskPercent": {
+            "type": "number"
+          },
+          "defaultDenomination": {
+            "type": "number"
+          },
+          "defaultBet": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "denominations": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          }
+        }
+      },
+      "JackpotConfigDto": {
+        "type": "object",
+        "properties": {
+          "jackpotEnabled": {
+            "type": "boolean"
+          },
+          "configs": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/JackpotConfig"
+            }
+          }
+        }
+      },
+      "CreateSessionDto": {
+        "required": [
+          "customer",
+          "game"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "customer": {
+            "type": "string"
+          },
+          "game": {
+            "type": "string"
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "DEMO",
+              "GAME"
+            ]
+          }
+        }
+      },
+      "SessionDto": {
+        "type": "object",
+        "properties": {
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "token": {
+            "type": "string"
+          },
+          "link": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "closed": {
+            "type": "boolean"
+          }
+        }
+      },
+      "CloseSessionDto": {
+        "type": "object",
+        "properties": {
+          "sessionId": {
+            "type": "string"
+          },
+          "closed": {
+            "type": "boolean"
+          }
+        }
+      },
+      "CreateUserDto": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "avatar": {
+            "type": "string"
+          },
+          "roles": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "SecurityDto": {
+        "type": "object",
+        "properties": {
+          "oldPassword": {
+            "type": "string"
+          },
+          "newPassword": {
+            "type": "string"
+          }
+        }
+      },
+      "UpdateRoleDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "permissions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "SHOW_TABLES",
+                "PROJECT_EDIT",
+                "PROJECT_SHOW_LIST",
+                "USERS_EDIT",
+                "USERS_SHOW_LIST",
+                "MEDIA_UPLOAD_FILES",
+                "MEDIA_SHOW_FILES",
+                "MEDIA_DELETE_FILES",
+                "SHOW_OPERATIONS",
+                "SHOW_OPEN_OPERATIONS",
+                "SHOW_GAMES_LIST",
+                "EDIT_GAME",
+                "SHOW_SESSIONS",
+                "SHOW_CUSTOMERS",
+                "REPLAY_OPERATION",
+                "ROLES_EDIT",
+                "SHOW_PROFIT_DATA",
+                "PROJECT_EXTERNAL_ANALYTICS",
+                "SYSTEM_SETTINGS",
+                "JACKPOT_CONFIG_EDIT",
+                "JACKPOT_CONFIG_VIEW",
+                "MATH_CONFIG_EDIT",
+                "MATH_CONFIG_VIEW",
+                "MANUAL_START_CURRENCY_JOB",
+                "CLOSE_OPERATIONS",
+                "SHOW_OFFERS",
+                "CREATE_OFFER"
+              ]
+            }
+          }
+        }
+      },
+      "RoleDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "updateDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "description": {
+            "type": "string"
+          },
+          "users": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "permissions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "SHOW_TABLES",
+                "PROJECT_EDIT",
+                "PROJECT_SHOW_LIST",
+                "USERS_EDIT",
+                "USERS_SHOW_LIST",
+                "MEDIA_UPLOAD_FILES",
+                "MEDIA_SHOW_FILES",
+                "MEDIA_DELETE_FILES",
+                "SHOW_OPERATIONS",
+                "SHOW_OPEN_OPERATIONS",
+                "SHOW_GAMES_LIST",
+                "EDIT_GAME",
+                "SHOW_SESSIONS",
+                "SHOW_CUSTOMERS",
+                "REPLAY_OPERATION",
+                "ROLES_EDIT",
+                "SHOW_PROFIT_DATA",
+                "PROJECT_EXTERNAL_ANALYTICS",
+                "SYSTEM_SETTINGS",
+                "JACKPOT_CONFIG_EDIT",
+                "JACKPOT_CONFIG_VIEW",
+                "MATH_CONFIG_EDIT",
+                "MATH_CONFIG_VIEW",
+                "MANUAL_START_CURRENCY_JOB",
+                "CLOSE_OPERATIONS",
+                "SHOW_OFFERS",
+                "CREATE_OFFER"
+              ]
+            }
+          }
+        }
+      },
+      "CreateProjectDto": {
+        "type": "object",
+        "properties": {
+          "merchantId": {
+            "type": "string"
+          },
+          "callbackHost": {
+            "type": "string"
+          }
+        }
+      },
+      "CreateOfferRequest": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "game": {
+            "type": "string"
+          },
+          "bet": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "line": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "denomination": {
+            "type": "number"
+          },
+          "countSpins": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "partner": {
+            "type": "string"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "from": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "to": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endDateAddOffer": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "OfferDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string"
+          },
+          "game": {
+            "type": "string"
+          },
+          "bet": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "line": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "denomination": {
+            "type": "number"
+          },
+          "countSpins": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "partner": {
+            "type": "string"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "from": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "to": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endDateAddOffer": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "AddCustomerOfferDto": {
+        "type": "object",
+        "properties": {
+          "project": {
+            "type": "string"
+          },
+          "customers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "offer": {
+            "type": "string"
+          },
+          "expireDate": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "CustomerOfferDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "customer": {
+            "type": "string"
+          },
+          "project": {
+            "type": "string"
+          },
+          "game": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "CURRENT",
+              "EXPIRED",
+              "FINISHED",
+              "CANCELED"
+            ]
+          },
+          "availableFrom": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "expireDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "gift": {
+            "$ref": "#/components/schemas/Gift"
+          },
+          "manager": {
+            "type": "string"
+          }
+        }
+      },
+      "Gift": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "line": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "bet": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "available": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "denomination": {
+            "type": "number"
+          },
+          "totalWin": {
+            "type": "number"
+          }
+        }
+      },
+      "RequestPageableFilter": {
+        "type": "object",
+        "properties": {
+          "fromDate": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "toDate": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "MediaFileDto": {
+        "type": "object",
+        "properties": {
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "name": {
+            "type": "string"
+          },
+          "link": {
+            "type": "string"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "OperationModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "openDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "closeDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "bet": {
+            "type": "number"
+          },
+          "win": {
+            "type": "number"
+          },
+          "game": {
+            "type": "string"
+          },
+          "profit": {
+            "type": "number"
+          },
+          "profitCurrency": {
+            "type": "number"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "customerId": {
+            "type": "string"
+          },
+          "sessionId": {
+            "type": "string"
+          },
+          "partnerId": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "CLIENT_ERROR",
+              "TO_REFUND",
+              "REFUNDED",
+              "REFUND_ERROR",
+              "OPEN",
+              "CLOSED"
+            ]
+          }
+        }
+      },
+      "GameFullModel": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "releaseDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "preReleaseDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "promoFiles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MediaFileDto"
+            }
+          },
+          "volatility": {
+            "type": "string"
+          },
+          "genres": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "features": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "images": {
+            "$ref": "#/components/schemas/GameImages"
+          },
+          "description": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "GameImages": {
+        "type": "object",
+        "properties": {
+          "small": {
+            "type": "string"
+          },
+          "large": {
+            "type": "string"
+          },
+          "animation": {
+            "type": "string"
+          }
+        }
+      },
+      "WinRequest": {
+        "type": "object",
+        "properties": {
+          "customer": {
+            "type": "string"
+          },
+          "session": {
+            "type": "string"
+          },
+          "gift": {
+            "$ref": "#/components/schemas/Gift"
+          },
+          "transactionId": {
+            "type": "string"
+          },
+          "sum": {
+            "type": "number"
+          },
+          "gameId": {
+            "type": "string"
+          },
+          "roundId": {
+            "type": "string"
+          }
+        }
+      },
+      "WinResponse": {
+        "type": "object",
+        "properties": {
+          "balance": {
+            "type": "number"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "transactionId": {
+            "type": "string"
+          }
+        }
+      },
+      "BetRequest": {
+        "type": "object",
+        "properties": {
+          "customer": {
+            "type": "string"
+          },
+          "session": {
+            "type": "string"
+          },
+          "gift": {
+            "$ref": "#/components/schemas/Gift"
+          },
+          "transactionId": {
+            "type": "string"
+          },
+          "sum": {
+            "type": "number"
+          },
+          "gameId": {
+            "type": "string"
+          },
+          "roundId": {
+            "type": "string"
+          },
+          "lostWin": {
+            "type": "boolean"
+          }
+        }
+      },
+      "BetResponse": {
+        "type": "object",
+        "properties": {
+          "balance": {
+            "type": "number"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "transactionId": {
+            "type": "string"
+          }
+        }
+      },
+      "BalanceRequest": {
+        "type": "object",
+        "properties": {
+          "customer": {
+            "type": "string"
+          },
+          "session": {
+            "type": "string"
+          },
+          "gift": {
+            "$ref": "#/components/schemas/Gift"
+          }
+        }
+      },
+      "BalanceResponse": {
+        "type": "object",
+        "properties": {
+          "balance": {
+            "type": "number"
+          },
+          "currency": {
+            "type": "string"
+          }
+        }
+      },
+      "OperationDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "bet": {
+            "type": "number"
+          },
+          "win": {
+            "type": "number"
+          },
+          "initialBalance": {
+            "type": "number"
+          },
+          "openAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "closeAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "game": {
+            "type": "string"
+          },
+          "sessionId": {
+            "type": "string"
+          },
+          "customerId": {
+            "type": "string"
+          },
+          "transactions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "merchantTransactions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "GameDto": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "features": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "genres": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "descriptions": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "GameProfitDto": {
+        "type": "object",
+        "properties": {
+          "game": {
+            "type": "string"
+          },
+          "countPlayers": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "countOperations": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalBets": {
+            "type": "number"
+          },
+          "totalWins": {
+            "type": "number"
+          }
+        }
+      },
+      "AccountDto": {
+        "type": "object",
+        "properties": {
+          "merchantId": {
+            "type": "string"
+          },
+          "openSessions": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "openOperations": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "availableGames": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "UserInfo": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "permissions": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "projects": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "ProjectStatistic": {
+        "type": "object",
+        "properties": {
+          "transactionCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "transactionProfit": {
+            "type": "number"
+          },
+          "uniqueCustomerCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sessionsCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "UserAnalyticDto": {
+        "type": "object",
+        "properties": {
+          "allTransactionCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "allTransactionProfit": {
+            "type": "number"
+          },
+          "allUniqueCustomer": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "allSessions": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "projectCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "projectStatistics": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProjectStatistic"
+            }
+          }
+        }
+      },
+      "PermissionDto": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "enum": [
+              "SHOW_TABLES",
+              "PROJECT_EDIT",
+              "PROJECT_SHOW_LIST",
+              "USERS_EDIT",
+              "USERS_SHOW_LIST",
+              "MEDIA_UPLOAD_FILES",
+              "MEDIA_SHOW_FILES",
+              "MEDIA_DELETE_FILES",
+              "SHOW_OPERATIONS",
+              "SHOW_OPEN_OPERATIONS",
+              "SHOW_GAMES_LIST",
+              "EDIT_GAME",
+              "SHOW_SESSIONS",
+              "SHOW_CUSTOMERS",
+              "REPLAY_OPERATION",
+              "ROLES_EDIT",
+              "SHOW_PROFIT_DATA",
+              "PROJECT_EXTERNAL_ANALYTICS",
+              "SYSTEM_SETTINGS",
+              "JACKPOT_CONFIG_EDIT",
+              "JACKPOT_CONFIG_VIEW",
+              "MATH_CONFIG_EDIT",
+              "MATH_CONFIG_VIEW",
+              "MANUAL_START_CURRENCY_JOB",
+              "CLOSE_OPERATIONS",
+              "SHOW_OFFERS",
+              "CREATE_OFFER"
+            ]
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      },
+      "GameSessionDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "merchantId": {
+            "type": "string"
+          },
+          "customer": {
+            "type": "string"
+          },
+          "openDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "balance": {
+            "type": "number"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "allBet": {
+            "type": "number"
+          },
+          "allWin": {
+            "type": "number"
+          },
+          "betCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "profit": {
+            "type": "number"
+          },
+          "profitCurrency": {
+            "type": "number"
+          },
+          "rtp": {
+            "type": "number"
+          }
+        }
+      },
+      "LoadModel": {
+        "type": "object",
+        "properties": {
+          "frame": {
+            "type": "string"
+          },
+          "bet": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "line": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "denomination": {
+            "type": "number"
+          },
+          "subscribes": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "account_balance": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "game_name": {
+            "type": "string"
+          }
+        }
+      },
+      "LoadedState": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          }
+        }
+      },
+      "OperationHistoryModel": {
+        "type": "object",
+        "properties": {
+          "playDate": {
+            "type": "string"
+          },
+          "win": {
+            "type": "number"
+          },
+          "totalWin": {
+            "type": "number"
+          },
+          "recoil": {
+            "type": "boolean"
+          },
+          "type": {
+            "type": "string"
+          },
+          "loadedState": {
+            "$ref": "#/components/schemas/LoadedState"
+          },
+          "spin": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object"
+            }
+          },
+          "load": {
+            "$ref": "#/components/schemas/LoadModel"
+          },
+          "risk": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nominal": {
+            "type": "number"
+          },
+          "startBalance": {
+            "type": "number"
+          },
+          "endBalance": {
+            "type": "number"
+          }
+        }
+      },
+      "OperationCategoriesData": {
+        "type": "object",
+        "properties": {
+          "partner": {
+            "type": "string"
+          },
+          "countByTime": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          }
+        }
+      },
+      "OperationStats24Model": {
+        "type": "object",
+        "properties": {
+          "categories": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OperationCategoriesData"
+            }
+          }
+        }
+      },
+      "GameCustomerDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "lastSessionDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "merchantId": {
+            "type": "string"
+          },
+          "sessionCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "betsCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "betsSum": {
+            "type": "number"
+          },
+          "betsSumCurrency": {
+            "type": "number"
+          },
+          "winsSum": {
+            "type": "number"
+          },
+          "winsSumCurrency": {
+            "type": "number"
+          },
+          "profit": {
+            "type": "number"
+          },
+          "profitCurrency": {
+            "type": "number"
+          },
+          "rtp": {
+            "type": "number"
+          }
+        }
+      },
+      "GameModel": {
+        "type": "object",
+        "properties": {
+          "image": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "GameWithMetaDataModel": {
+        "type": "object",
+        "properties": {
+          "image": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "lines": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "bets": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        }
+      },
+      "ExternalAnalyticDto": {
+        "type": "object",
+        "properties": {
+          "disabled": {
+            "type": "boolean"
+          },
+          "url": {
+            "type": "string"
+          }
+        }
       }
     }
   }
