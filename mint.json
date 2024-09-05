@@ -5,7 +5,9 @@
     "dark": "/logo/cropped-logo-dark.png",
     "light": "/logo/cropped-logo.png"
   },
+  "theme": "venus",
   "favicon": "/favicon.svg",
+  "openapi": "/swagger.json",
   "colors": {
     "primary": "#0D9373",
     "light": "#07C983",
