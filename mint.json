@@ -6,6 +6,10 @@
     "dark": "/logo/dark.png",
     "light": "/logo/light.png"
   },
+  "theme": "venus",
+  "modeToggle": {
+    "default": "light"
+  },
   "openapi": "/api/openapi.json",
   "colors": {
     "primary": "#0D9373",
@@ -30,7 +34,7 @@
   ],
   "anchors": [
     {
-      "name": "Games",
+      "name": "All Games",
       "icon": "newspaper",
       "url": "https://sloto-lands.com/en/games"
     },
