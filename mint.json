@@ -1,21 +1,11 @@
 {
   "$schema": "https://mintlify.com/schema.json",
   "name": "SlotoLands",
+  "theme": "venus",
+  "favicon": "/favicon.svg",
   "logo": {
     "dark": "/logo/dark.png",
     "light": "/logo/light.png"
-  },
-  "theme": "venus",
-  "favicon": "/favicon.svg",
-  "layout": "solidSidenav",
-  "modeToggle": {
-    "default": "dark"
-  },
-  "search": {
-    "location": "side"
-  },
-  "topbar": {
-    "style": "gradient"
   },
   "colors": {
     "primary": "#0D9373",
@@ -34,8 +24,8 @@
   ],
   "tabs": [
     {
-      "name": "API Reference",
-      "url": "api-reference"
+      "name": "API",
+      "url": "api"
     }
   ],
   "anchors": [
@@ -60,22 +50,25 @@
     {
       "group": "API Documentation",
       "pages": [
-        "api-reference/introduction"
+        "api/introduction"
       ]
     },
     {
       "group": "Integration endpoints",
       "pages": [
-        "api-reference/client/get-balance",
-        "api-reference/client/bet-request",
-        "api-reference/client/win-request",
-        "api-reference/client/refund-request"
+        "api/client/enter-request",
+        "api/client/get-balance",
+        "api/client/bet-request",
+        "api/client/win-request",
+        "api/client/refund-request"
       ]
     },
     {
       "group": "Provider resources",
       "pages": [
-        "api-reference/form/launch"
+        "api/create-session",
+        "api/game-list",
+        "api/launch"
       ]
     }
   ],
