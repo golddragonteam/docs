@@ -67,7 +67,7 @@
     },
     "/balance": {
       "description": "Get session balance",
-      "get": {
+      "post": {
         "parameters": [],
         "requestBody": {
           "content": {
@@ -83,7 +83,7 @@
     },
     "/bet": {
       "description": "Request bet",
-      "get": {
+      "post": {
         "parameters": [],
         "requestBody": {
           "content": {
@@ -99,7 +99,7 @@
     },
     "/win": {
       "description": "Payout by round",
-      "get": {
+      "post": {
         "parameters": [],
         "requestBody": {
           "content": {
@@ -115,7 +115,7 @@
     },
     "/refund": {
       "description": "Refund error bet",
-      "get": {
+      "post": {
         "parameters": [],
         "requestBody": {
           "content": {
