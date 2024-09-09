@@ -1,22 +1,16 @@
 {
   "$schema": "https://mintlify.com/schema.json",
   "name": "SlotoLands",
+  "favicon": "/favicon.svg",
   "logo": {
     "dark": "/logo/dark.png",
     "light": "/logo/light.png"
   },
   "theme": "venus",
-  "favicon": "/favicon.svg",
-  "layout": "solidSidenav",
   "modeToggle": {
-    "default": "dark"
+    "default": "light"
   },
-  "search": {
-    "location": "side"
-  },
-  "topbar": {
-    "style": "gradient"
-  },
+  "openapi": "/api/openapi.json",
   "colors": {
     "primary": "#0D9373",
     "light": "#07C983",
@@ -34,13 +28,13 @@
   ],
   "tabs": [
     {
-      "name": "API Reference",
-      "url": "api-reference"
+      "name": "API",
+      "url": "api"
     }
   ],
   "anchors": [
     {
-      "name": "Games",
+      "name": "All Games",
       "icon": "newspaper",
       "url": "https://sloto-lands.com/en/games"
     },
@@ -60,28 +54,30 @@
     {
       "group": "API Documentation",
       "pages": [
-        "api-reference/introduction"
+        "api/introduction"
       ]
     },
     {
       "group": "Integration endpoints",
       "pages": [
-        "api-reference/client/get-balance",
-        "api-reference/client/bet-request",
-        "api-reference/client/win-request",
-        "api-reference/client/refund-request"
+        "api/client/enter-request",
+        "api/client/get-balance",
+        "api/client/bet-request",
+        "api/client/win-request",
+        "api/client/refund-request"
       ]
     },
     {
       "group": "Provider resources",
       "pages": [
-        "api-reference/form/launch"
+        "api/create-session",
+        "api/game-list",
+        "api/launch"
       ]
     }
   ],
   "footerSocials": {
     "x": "https://twitter.com/slotoland",
-    "skype": "https://join.skype.com/invite/LvXPc3IcMCYu",
     "linkedin": "https://www.linkedin.com/company/sloto-land"
   }
 }

@@ -1,0 +1,421 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "https://provider-site.com",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/launch/{game}": {
+      "description": "Game page. Open game",
+      "get": {
+        "summary": "",
+        "operationId": "launch game",
+        "parameters": [
+          {
+            "name": "game",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "partner",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "land",
+            "description": "en | ru | ua. Default en",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "description": "Html page with game frame"
+                },
+                "example": "<html></html>"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/enter": {
+      "description": "Load game on created session",
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EnterRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Desc",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EnterResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/balance": {
+      "description": "Get session balance",
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BalanceRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Desc",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BalanceResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bet": {
+      "description": "Request bet",
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BetRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Desc",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BetResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/win": {
+      "description": "Payout by round",
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WinRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Desc",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WinResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/refund": {
+      "description": "Refund error bet",
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefundRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Desc",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RefundResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Error code [user_blocked | other_error]",
+            "enum": ["user_blocked", "other_error"]
+          },
+          "message": {
+            "type": "string",
+            "description": "Text description error"
+          }
+        }
+      },
+      "EnterRequest": {
+        "type": "object",
+        "required": [
+          "game", "session"
+        ],
+        "properties": {
+          "game": {
+            "type": "string",
+            "description": "Unique game code"
+          },
+          "session": {
+            "description": "Session id created by /create-session",
+            "type": "string"
+          }
+        }
+      },
+      "EnterResponse": {
+        "type": "object",
+        "required": [ "user", "currency", "balance" ],
+        "properties": {
+          "user": {
+            "type": "string"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "balance": {
+            "type": "number",
+            "format": "double",
+            "minimum": 0.01
+          }
+        }
+      },
+      "BalanceRequest": {
+        "type": "object",
+        "properties": {
+          "session": {
+            "type": "string"
+          }
+        }
+      },
+      "BalanceResponse": {
+        "type": "object",
+        "properties": {
+          "currency": {
+            "type": "string"
+          },
+          "balance": {
+            "type": "string"
+          }
+        }
+      },
+      "BetRequest": {
+        "type": "object",
+        "properties": {
+          "session": {
+            "type": "string"
+          },
+          "user": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "number",
+            "format": "double",
+            "minimum": 0.01
+          },
+          "game": { "type": "string" },
+          "transactionId": {"type": "string"},
+          "round": {"type": "string"},
+          "finished": {"type": "boolean"}
+        }
+      },
+      "BetResponse": {
+        "type": "object",
+        "required": ["balance"],
+        "properties": {
+          "balance": {
+            "description": "Actually user balance after operation",
+            "type": "string"
+          },
+          "transactionId": {
+            "description": "Client local transaction id",
+            "type": "string"
+          }
+        }
+      },
+      "WinRequest": {
+        "type": "object",
+        "properties": {
+          "session": {
+            "type": "string"
+          },
+          "user": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "number",
+            "format": "double",
+            "minimum": 0.01
+          },
+          "game": { "type": "string" },
+          "transactionId": {"type": "string"},
+          "round": {"type": "string"},
+          "finished": {"type": "boolean"}
+        }
+      },
+      "WinResponse": {
+        "type": "object",
+        "required": ["balance"],
+        "properties": {
+          "balance": {
+            "description": "Actually user balance after operation",
+            "type": "string"
+          },
+          "transactionId": {
+            "description": "Client local transaction id",
+            "type": "string"
+          }
+        }
+      },
+      "RefundRequest": {
+        "type": "object",
+        "properties": {
+          "session": {
+            "type": "string"
+          },
+          "user": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "number",
+            "format": "double",
+            "minimum": 0.01
+          },
+          "game": { "type": "string" },
+          "transactionId": {"type": "string"},
+          "round": {"type": "string"},
+          "finished": {"type": "boolean"}
+        }
+      },
+      "RefundResponse": {
+        "type": "object",
+        "required": ["balance"],
+        "properties": {
+          "balance": {
+            "description": "Actually user balance after operation",
+            "type": "string"
+          },
+          "transactionId": {
+            "description": "Client local transaction id",
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
