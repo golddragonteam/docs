@@ -10,7 +10,7 @@
   "modeToggle": {
     "default": "light"
   },
-  "openapi": "/api/openapi.json",
+  "openapi": "/api-reference/openapi.json",
   "colors": {
     "primary": "#0D9373",
     "light": "#07C983",
@@ -29,7 +29,7 @@
   "tabs": [
     {
       "name": "API",
-      "url": "api"
+      "url": "api-reference"
     }
   ],
   "anchors": [
@@ -54,25 +54,25 @@
     {
       "group": "API Documentation",
       "pages": [
-        "api/introduction"
+        "api-reference/introduction"
       ]
     },
     {
       "group": "Integration endpoints",
       "pages": [
-        "api/client/enter-request",
-        "api/client/get-balance",
-        "api/client/bet-request",
-        "api/client/win-request",
-        "api/client/refund-request"
+        "api-reference/client/enter-request",
+        "api-reference/client/get-balance",
+        "api-reference/client/bet-request",
+        "api-reference/client/win-request",
+        "api-reference/client/refund-request"
       ]
     },
     {
       "group": "Provider resources",
       "pages": [
-        "api/create-session",
-        "api/game-list",
-        "api/launch"
+        "api-reference/create-session",
+        "api-reference/game-list",
+        "api-reference/launch"
       ]
     }
   ],
