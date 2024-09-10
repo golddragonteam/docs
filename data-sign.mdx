@@ -15,6 +15,23 @@ description: 'Digital Signature Generation'
 
 ## Example
 
-```java
-String data = "";
+```java java
+//        class Request {
+//            String name = "Test name"
+//            BigDecimal amount = 100.0
+//            Boolean created  = false
+//        }
+
+String text = "100.00|false|Test name";
+
+var res = sign(text, "12345678901234567890123456789012");
+res == "D3CE21A5413B3508CCC8A2A1752CCA2E8EA13B05E57ED1207A05BA9F05498C9B";
+
+private String sign(String text, String secret) {
+    Mac mac = Mac.getInstance("HmacSHA256");
+    mac.init(new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), mac.getAlgorithm()));
+    byte[] result = mac.doFinal(text.getBytes(StandardCharsets.UTF_8));
+
+    return new BigInteger(1, result).toString(16).toUpperCase();
+}
 ```
