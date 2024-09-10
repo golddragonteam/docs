@@ -48,31 +48,25 @@
     {
       "group": "Get Started",
       "pages": [
-        "introduction"
-      ]
-    },
-    {
-      "group": "API Documentation",
-      "pages": [
-        "api-reference/introduction"
-      ]
-    },
-    {
-      "group": "Integration endpoints",
-      "pages": [
-        "api-reference/client/enter-request",
-        "api-reference/client/get-balance",
-        "api-reference/client/bet-request",
-        "api-reference/client/win-request",
-        "api-reference/client/refund-request"
+        "introduction",
+        "data-sign"
       ]
     },
     {
       "group": "Provider resources",
       "pages": [
         "api-reference/create-session",
-        "api-reference/game-list",
         "api-reference/launch"
+      ]
+    },
+    {
+      "group": "Callback endpoints",
+      "pages": [
+        "api-reference/client/enter-request",
+        "api-reference/client/get-balance",
+        "api-reference/client/bet-request",
+        "api-reference/client/win-request",
+        "api-reference/client/refund-request"
       ]
     }
   ],

@@ -26,7 +26,17 @@
             }
           },
           {
+            "name": "key",
+            "description": "Unique game session id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "partner",
+            "description": "Unique partner id",
             "in": "query",
             "required": true,
             "schema": {
@@ -34,16 +44,27 @@
             }
           },
           {
-            "name": "token",
-            "in": "query",
+            "name": "mode",
+            "description": "Game mode",
             "required": true,
+            "in": "query",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "enum": ["game", "demo"]
             }
           },
           {
-            "name": "land",
-            "description": "en | ru | ua. Default en",
+            "name": "lang",
+            "description": "Language game interface, default en",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": ["en", "ru", "ua"]
+            }
+          },
+          {
+            "name": "exit",
+            "description": "Url exit to partner game lobby",
             "in": "query",
             "schema": {
               "type": "string"
@@ -59,6 +80,47 @@
                   "description": "Html page with game frame"
                 },
                 "example": "<html></html>"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/sessions": {
+      "post": {
+        "description": "Init new game session",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSessionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateSessionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
               }
             }
           }
@@ -247,18 +309,92 @@
     }
   },
   "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
     "schemas": {
       "Error": {
         "type": "object",
         "properties": {
           "code": {
             "type": "string",
-            "description": "Error code [user_blocked | other_error]",
+            "description": "Error code",
             "enum": ["user_blocked", "other_error"]
           },
           "message": {
             "type": "string",
             "description": "Text description error"
+          }
+        }
+      },
+
+      "CreateSessionRequest": {
+        "type": "object",
+        "required": [
+          "id", "user", "game", "mode", "currency"
+        ],
+        "properties": {
+          "game": {
+            "type": "string",
+            "description": "Unique game code"
+          },
+          "id": {
+            "description": "Unique session id",
+            "type": "string"
+          },
+          "user": {
+            "description": "Unique user id",
+            "type": "string"
+          },
+          "mode": {
+            "description": "Game mode for this session",
+            "type": "string",
+            "enum": ["GAME", "DEMO"]
+          },
+          "currency": {
+            "description": "User balance currency",
+            "type": "string",
+            "enum": [
+              "EUR", "USD", "UAH", "KZT"
+            ]
+          },
+          "lang": {
+            "description": "Unique session id",
+            "type": "string",
+            "enum": ["en", "ru", "ua"]
+          },
+          "exit": {
+            "description": "Exit url to partner game lobby",
+            "type": "string"
+          }
+        }
+      },
+      "CreateSessionResponse": {
+        "type": "object",
+        "required": [
+          "createdAt", "link", "id", "closed"
+        ],
+        "properties": {
+          "id": {
+            "description": "Session id from partner",
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "Date time to created session"
+          },
+          "link": {
+            "description": "Full link to launch game",
+            "type": "string"
+          },
+
+          "closed": {
+            "description": "Session state",
+            "type": "boolean"
           }
         }
       },
@@ -274,6 +410,10 @@
           },
           "session": {
             "description": "Session id created by /create-session",
+            "type": "string"
+          },
+          "sign": {
+            "description": "digital signature",
             "type": "string"
           }
         }
@@ -297,14 +437,20 @@
       },
       "BalanceRequest": {
         "type": "object",
+        "required": ["session"],
         "properties": {
           "session": {
+            "type": "string"
+          },
+          "sign": {
+            "description": "digital signature",
             "type": "string"
           }
         }
       },
       "BalanceResponse": {
         "type": "object",
+        "required": ["currency", "balance"],
         "properties": {
           "currency": {
             "type": "string"
@@ -329,9 +475,13 @@
             "minimum": 0.01
           },
           "game": { "type": "string" },
-          "transactionId": {"type": "string"},
-          "round": {"type": "string"},
-          "finished": {"type": "boolean"}
+          "transactionId": { "type": "string" },
+          "round": { "type": "string" },
+          "finished": { "type": "boolean" },
+          "sign": {
+            "description": "digital signature",
+            "type": "string"
+          }
         }
       },
       "BetResponse": {
@@ -363,9 +513,13 @@
             "minimum": 0.01
           },
           "game": { "type": "string" },
-          "transactionId": {"type": "string"},
-          "round": {"type": "string"},
-          "finished": {"type": "boolean"}
+          "transactionId": { "type": "string" },
+          "round": { "type": "string" },
+          "finished": { "type": "boolean" },
+          "sign": {
+            "description": "digital signature",
+            "type": "string"
+          }
         }
       },
       "WinResponse": {
@@ -397,9 +551,13 @@
             "minimum": 0.01
           },
           "game": { "type": "string" },
-          "transactionId": {"type": "string"},
-          "round": {"type": "string"},
-          "finished": {"type": "boolean"}
+          "transactionId": { "type": "string" },
+          "round": { "type": "string" },
+          "betTransactionId": { "type": "string" },
+          "sign": {
+            "description": "digital signature",
+            "type": "string"
+          }
         }
       },
       "RefundResponse": {

@@ -1,4 +1,6 @@
 ---
 title: 'win'
 openapi: 'POST /win'
+description: "Called when the User wins. Client is expected to increase player's balance by amount and return new balance.
+Each win has transactionID which is unique identifier of this transaction. Before any altering of User's balance, Client has to check that win wasn't processed before."
 ---

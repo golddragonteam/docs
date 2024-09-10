@@ -1,4 +1,6 @@
 ---
 title: 'bet'
 openapi: 'POST /bet'
+description: "Called when the User places a bet Client is expected to decrease player's balance by amount and return new balance.
+Each bet has transactionId which is unique identifier of this transaction. Before altering of User's balance, Client has to check that bet wasn't processed before."
 ---

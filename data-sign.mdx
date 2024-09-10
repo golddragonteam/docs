@@ -1,0 +1,20 @@
+---
+title: Signature
+description: 'Digital Signature Generation'
+---
+
+## General Principe
+
+- Identify all fields at body expect the "sign" field
+- Sort these variables alphabetically
+- Concatenate the sorted values using a '|' delimiter
+<Info>"value1|value2|value3" </Info>
+- A HMAC-SHA256 code is generated using a key, which is associated with the account
+- The code is converted into a string that is a hexadecimal representation of the code (64 uppercase characters)
+<Note>The amount always has to be adjusted to exactly 2 decimal places</Note>
+
+## Example
+
+```java
+String data = "";
+```

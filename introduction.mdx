@@ -1,11 +1,28 @@
 ---
 title: Introduction
 description: 'This document is intended for technical specialists and contains a description of the system structure, the interaction and functions of the components,
-              the operation principles. Also, this document includes a detailed description of the queries structure and examples of their use;examples of standard
-              scenarios and handling various contingencies.'
+              the operation principles.'
 ---
+SlotoLand system accesses the player's wallet in the Client's system in realtime to retrieve player's balance and to
+perform credit, debit and cancel transactions. This communication is handled by the SlotoLand api server.
 
-## Setting up
+- RESTful service with lightweight JSON-formatted requests/responses
+- Requests are made via HTTP POST method, containing JSON request object in request body (all responses should contain header "content-type: application/json")
+- Served over HTTPS - to ensure security and data privacy, unencrypted HTTP is not supported
+
+The Client must implement Callback service in their system. Using this service, system will work with the player’s balance in the system.
+
+The Callback service must implement the following operations:
+- balance
+- bet
+- win
+- refund
+
+As for authentication, each request contains a cryptographic hash (parameter sign) calculated from the data to be transmitted.
+
+<Tip>
+The only expected HTTP Status Code is 200 (OK). Business logic related errors are communicated directly in response JSON data content.
+</Tip>
 
 
 
