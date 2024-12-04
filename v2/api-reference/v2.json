@@ -1,0 +1,857 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "https://provider-site.com",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/launch/{game}": {
+      "description": "Game page. Open game",
+      "get": {
+        "summary": "",
+        "operationId": "launch game",
+        "parameters": [
+          {
+            "name": "game",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "key",
+            "description": "Unique game session id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "partner",
+            "description": "Unique partner id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "mode",
+            "description": "Game mode",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": ["game", "demo"]
+            }
+          },
+          {
+            "name": "lang",
+            "description": "Language game interface, default en",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": ["en", "ru", "ua"]
+            }
+          },
+          {
+            "name": "exit",
+            "description": "Url exit to partner game lobby",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "description": "Html page with game frame"
+                },
+                "example": "<html></html>"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/sessions": {
+      "post": {
+        "description": "Init new game session",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSessionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateSessionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/free-spins": {
+      "post": {
+        "description": "Add a free spins offer to the user",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateFreeSpinRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateFreeSpinResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/free-spins/info": {
+      "post": {
+        "description": "free spins offer status",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FreeSpinInfoRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateFreeSpinResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/free-spins/cancel": {
+      "post": {
+        "description": "Cancel free spins offer",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FreeSpinInfoRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateFreeSpinResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/enter": {
+      "description": "Load game on created session",
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EnterRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Desc",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EnterResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/balance": {
+      "description": "Get session balance",
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BalanceRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Desc",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BalanceResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bet": {
+      "description": "Request bet",
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BetRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Desc",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BetResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/win": {
+      "description": "Payout by round",
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WinRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Desc",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WinResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/refund": {
+      "description": "Refund error bet",
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefundRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Desc",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RefundResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Error code",
+            "enum": ["user_blocked", "other_error"]
+          },
+          "message": {
+            "type": "string",
+            "description": "Text description error"
+          }
+        }
+      },
+
+      "CreateSessionRequest": {
+        "type": "object",
+        "required": [
+          "id", "user", "game", "mode", "currency", "partner"
+        ],
+        "properties": {
+          "id": {
+            "description": "Unique session id",
+            "type": "string"
+          },
+          "game": {
+            "type": "string",
+            "description": "Unique game code"
+          },
+          "partner": {
+            "type": "string",
+            "description": "Unique partner id"
+          },
+          "user": {
+            "description": "Unique user id",
+            "type": "string"
+          },
+          "mode": {
+            "description": "Game mode for this session",
+            "type": "string",
+            "enum": ["GAME", "DEMO"]
+          },
+          "currency": {
+            "description": "User balance currency",
+            "type": "string",
+            "enum": [
+              "EUR", "USD", "UAH", "KZT"
+            ]
+          },
+          "lang": {
+            "description": "Unique session id",
+            "type": "string",
+            "enum": ["en", "ru", "ua"]
+          },
+          "exit": {
+            "description": "Exit url to partner game lobby",
+            "type": "string"
+          }
+        }
+      },
+      "CreateSessionResponse": {
+        "type": "object",
+        "required": [
+          "createdAt", "link", "id", "closed"
+        ],
+        "properties": {
+          "id": {
+            "description": "Session id from partner",
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "Date time to created session"
+          },
+          "link": {
+            "description": "Full link to launch game",
+            "type": "string"
+          },
+
+          "closed": {
+            "description": "Session state",
+            "type": "boolean"
+          }
+        }
+      },
+      "FreeSpinInfoRequest": {
+        "type": "object",
+        "required": [
+          "campaignId", "partner", "user"
+        ],
+        "properties": {
+          "campaignId": {
+            "type": "string",
+            "description": "Unique campaign id"
+          },
+          "partner": {
+            "type": "string",
+            "description": "Unique partner id"
+          },
+          "user": {
+            "type": "string",
+            "description": "User id"
+          }
+        }
+      },
+      "CreateFreeSpinRequest": {
+        "type": "object",
+        "required": [
+          "campaignId", "partner", "game", "users", "currency", "spinCount", "bet", "toDate"        ],
+        "properties": {
+          "campaignId": {
+            "type": "string",
+            "description": "Unique campaign id"
+          },
+          "partner": {
+            "type": "string",
+            "description": "Unique partner id"
+          },
+          "game": {
+            "type": "string",
+            "description": "Game code"
+          },
+          "users": {
+            "type": "array",
+            "description": "List of user IDs for which free spins will be created (so far only one ID)"
+          },
+          "currency": {
+            "description": "User balance currency",
+            "type": "string",
+            "enum": [
+              "EUR", "USD", "UAH", "KZT"
+            ]
+          },
+          "spinCount": {
+            "type": "integer",
+            "description": "The number of spin"
+          },
+          "lines": {
+            "type": "integer",
+            "description": "The number of game lines"
+          },
+          "bet": {
+            "type": "number",
+            "description": "Spin bet"
+          },
+          "totalBet": {
+            "type": "number",
+            "description": "Total for all spins"
+          },
+          "fromDate": {
+            "type": "string",
+            "format": "yyyy-mm-ddThh:mm:ss",
+            "description": "The date and time of the start of the campaign, by default - now"
+          },
+          "toDate": {
+            "type": "string",
+            "format": "yyyy-mm-ddThh:mm:ss",
+            "description": "The date and time of the end of the campaign"
+          }
+        }
+      },
+      "CreateFreeSpinResponse": {
+        "type": "object",
+        "properties": {
+          "campaignId": {
+            "type": "string",
+            "description": "Unique campaign id"
+          },
+          "partner": {
+            "type": "string",
+            "description": "Unique partner id"
+          },
+          "game": {
+            "type": "string",
+            "description": "Game code"
+          },
+          "user": {
+            "type": "array",
+            "description": "User id"
+          },
+          "currency": {
+            "description": "User balance currency",
+            "type": "string",
+            "enum": [
+              "EUR", "USD", "UAH", "KZT"
+            ]
+          },
+          "spinCount": {
+            "type": "integer",
+            "description": "The number of spin"
+          },
+          "lines": {
+            "type": "integer",
+            "description": "The number of game lines"
+          },
+          "bet": {
+            "type": "number",
+            "description": "Spin bet"
+          },
+          "totalBet": {
+            "type": "number",
+            "description": "Total for all spins"
+          },
+          "fromDate": {
+            "type": "string",
+            "format": "yyyy-mm-ddThh:mm:ss",
+            "description": "The date and time of the start of the campaign"
+          },
+          "toDate": {
+            "type": "string",
+            "format": "yyyy-mm-ddThh:mm:ss",
+            "description": "The date and time of the end of the campaign"
+          },
+          "status": {
+            "type": "string",
+            "description": "Campaign status",
+            "enum": [
+              "CURRENT", "EXPIRED", "FINISHED", "CANCELED"
+            ]
+          }
+        }
+      },
+      "EnterRequest": {
+        "type": "object",
+        "required": [
+          "game", "session"
+        ],
+        "properties": {
+          "game": {
+            "type": "string",
+            "description": "Unique game code"
+          },
+          "session": {
+            "description": "Session id created by /create-session",
+            "type": "string"
+          },
+          "sign": {
+            "description": "digital signature",
+            "type": "string"
+          }
+        }
+      },
+      "EnterResponse": {
+        "type": "object",
+        "required": [ "user", "currency", "balance" ],
+        "properties": {
+          "user": {
+            "type": "string"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "balance": {
+            "type": "number",
+            "format": "double",
+            "minimum": 0.01
+          }
+        }
+      },
+      "BalanceRequest": {
+        "type": "object",
+        "required": ["session"],
+        "properties": {
+          "session": {
+            "type": "string"
+          },
+          "sign": {
+            "description": "digital signature",
+            "type": "string"
+          }
+        }
+      },
+      "BalanceResponse": {
+        "type": "object",
+        "required": ["currency", "balance"],
+        "properties": {
+          "currency": {
+            "type": "string"
+          },
+          "balance": {
+            "type": "string"
+          }
+        }
+      },
+      "BetRequest": {
+        "type": "object",
+        "properties": {
+          "session": {
+            "type": "string"
+          },
+          "user": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "number",
+            "format": "double",
+            "minimum": 0.01
+          },
+          "game": { "type": "string" },
+          "transactionId": { "type": "string" },
+          "round": { "type": "string" },
+          "finished": { "type": "boolean" },
+          "type": {
+            "type": "string",
+            "enum": ["real", "free_spin"]
+          },
+          "freeSpinCampaignId": { "type": "string", "nullable": true },
+          "freeSpinFinished": { "type": "boolean", "nullable": true },
+          "freeSpinWin": { "type": "number", "format": "double", "nullable": true },
+          "sign": {
+            "description": "digital signature",
+            "type": "string"
+          }
+        }
+      },
+      "BetResponse": {
+        "type": "object",
+        "required": ["balance"],
+        "properties": {
+          "balance": {
+            "description": "Actually user balance after operation",
+            "type": "string"
+          },
+          "transactionId": {
+            "description": "Client local transaction id",
+            "type": "string"
+          }
+        }
+      },
+      "WinRequest": {
+        "type": "object",
+        "properties": {
+          "session": {
+            "type": "string"
+          },
+          "user": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "number",
+            "format": "double",
+            "minimum": 0.01
+          },
+          "game": { "type": "string" },
+          "transactionId": { "type": "string" },
+          "round": { "type": "string" },
+          "finished": { "type": "boolean" },
+          "type": {
+            "type": "string",
+            "enum": ["real", "free_spin"]
+          },
+          "freeSpinCampaignId": { "type": "string", "nullable": true },
+          "freeSpinFinished": { "type": "boolean", "nullable": true },
+          "freeSpinWin": { "type": "number", "format": "double", "nullable": true },
+          "sign": {
+            "description": "digital signature",
+            "type": "string"
+          }
+        }
+      },
+      "WinResponse": {
+        "type": "object",
+        "required": ["balance"],
+        "properties": {
+          "balance": {
+            "description": "Actually user balance after operation",
+            "type": "string"
+          },
+          "transactionId": {
+            "description": "Client local transaction id",
+            "type": "string"
+          }
+        }
+      },
+      "RefundRequest": {
+        "type": "object",
+        "properties": {
+          "session": {
+            "type": "string"
+          },
+          "user": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "number",
+            "format": "double",
+            "minimum": 0.01
+          },
+          "game": { "type": "string" },
+          "transactionId": { "type": "string" },
+          "round": { "type": "string" },
+          "betTransactionId": { "type": "string" },
+          "sign": {
+            "description": "digital signature",
+            "type": "string"
+          }
+        }
+      },
+      "RefundResponse": {
+        "type": "object",
+        "required": ["balance"],
+        "properties": {
+          "balance": {
+            "description": "Actually user balance after operation",
+            "type": "string"
+          },
+          "transactionId": {
+            "description": "Client local transaction id",
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
