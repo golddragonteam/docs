@@ -86,6 +86,28 @@
         }
       }
     },
+    "/api/v1/games": {
+      "get": {
+        "description": "Load available game list",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GameModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/sessions": {
       "post": {
         "description": "Init new game session",
@@ -454,7 +476,17 @@
           }
         }
       },
-
+      "GameModel": {
+        "type": "object",
+        "properties": {
+          "code": { "type": "string", "description": "unique game code" },
+          "name": { "type": "string", "description": "game name" },
+          "images":  { "type": "array", "description": "image urls" },
+          "features":  { "type": "array", "description": "game features" },
+          "genres": { "type": "array", "description": "game genres" },
+          "descriptions":  { "type": "object", "description": "game description ( { en: 'text', ua: 'text' } )" }
+        }
+      },
       "CreateSessionRequest": {
         "type": "object",
         "required": [
@@ -592,12 +624,12 @@
           "fromDate": {
             "type": "string",
             "format": "yyyy-mm-ddThh:mm:ss",
-            "description": "The date and time of the start of the campaign, by default - now"
+            "description": "The date and time of the start of the campaign, by default - now. Format - yyyy-mm-ddThh:mm:ss"
           },
           "toDate": {
             "type": "string",
             "format": "yyyy-mm-ddThh:mm:ss",
-            "description": "The date and time of the end of the campaign"
+            "description": "The date and time of the end of the campaign. Format - yyyy-mm-ddThh:mm:ss"
           }
         }
       },
@@ -646,12 +678,12 @@
           "fromDate": {
             "type": "string",
             "format": "yyyy-mm-ddThh:mm:ss",
-            "description": "The date and time of the start of the campaign"
+            "description": "The date and time of the start of the campaign. Format - yyyy-mm-ddThh:mm:ss.fff"
           },
           "toDate": {
             "type": "string",
             "format": "yyyy-mm-ddThh:mm:ss",
-            "description": "The date and time of the end of the campaign"
+            "description": "The date and time of the end of the campaign. Format - yyyy-mm-ddThh:mm:ss.fff"
           },
           "status": {
             "type": "string",

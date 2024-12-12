@@ -69,6 +69,7 @@
       "group": "Provider resources",
       "version": "v2",
       "pages": [
+        "v2/api-reference/game-list",
         "v2/api-reference/create-session",
         "v2/api-reference/launch",
         "v2/api-reference/freespin-add",
