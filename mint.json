@@ -85,7 +85,8 @@
         "v2/api-reference/client/get-balance",
         "v2/api-reference/client/bet-request",
         "v2/api-reference/client/win-request",
-        "v2/api-reference/client/refund-request"
+        "v2/api-reference/client/refund-request",
+        "v2/api-reference/client/error-codes"
       ]
     },
     {

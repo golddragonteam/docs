@@ -357,22 +357,22 @@
           }
         },
         "responses": {
+          "422": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
           "200": {
             "description": "Desc",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/BetResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -468,7 +468,7 @@
           "code": {
             "type": "string",
             "description": "Error code",
-            "enum": ["user_blocked", "other_error"]
+            "enum": ["insufficient.balance", "locked.player", "error.internal"]
           },
           "message": {
             "type": "string",

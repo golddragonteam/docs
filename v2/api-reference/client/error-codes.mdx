@@ -1,0 +1,15 @@
+
+|          Code         | Description                                 |
+| --------------------- | ------------------------------------------- |
+| insufficient.balance  | There is not enough money to withdraw a bet |
+| locked.player         | Player blocked                              |
+| error.internal        | Abnormal situation during processing        |
+
+
+Http status - 422 with content body:
+```json
+{
+  "code": <code>,
+  "message": <text>
+}
+```
