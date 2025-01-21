@@ -484,7 +484,9 @@
           "images":  { "type": "array", "description": "image urls" },
           "features":  { "type": "array", "description": "game features" },
           "genres": { "type": "array", "description": "game genres" },
-          "descriptions":  { "type": "object", "description": "game description ( { en: 'text', ua: 'text' } )" }
+          "descriptions":  { "type": "object", "description": "game description ( { en: 'text', ua: 'text' } )" },
+          "buyBonusEnabled": { "type": "boolean", "description": "functionality for buying a bonus game" },
+          "freeSpinEnabled": { "type": "boolean", "description": "functionality for free spins" }
         }
       },
       "CreateSessionRequest": {
