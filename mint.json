@@ -6,7 +6,7 @@
     "dark": "/logo/dark.png",
     "light": "/logo/light.png"
   },
-  "versions": ["v1", "v2"],
+  "versions": [{ "name": "v1" }, { "name": "v2", "default": true }],
   "theme": "venus",
   "modeToggle": {
     "default": "light"
@@ -74,7 +74,8 @@
         "v2/api-reference/launch",
         "v2/api-reference/freespin-add",
         "v2/api-reference/freespin-cancel",
-        "v2/api-reference/freespin-status"
+        "v2/api-reference/freespin-status",
+        "v2/api-reference/freespin-bets"
       ]
     },
     {

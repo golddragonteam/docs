@@ -231,6 +231,47 @@
         }
       }
     },
+    "/api/v1/free-spins/available-bets": {
+      "post": {
+        "description": "a list of all available bets",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FreeSpinBetsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FreeSpinBetsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/free-spins/cancel": {
       "post": {
         "description": "Cancel free spins offer",
@@ -455,435 +496,223 @@
   },
   "components": {
     "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "scheme": "bearer",
-        "bearerFormat": "JWT"
-      }
+      "bearerAuth": { "type": "http", "scheme": "bearer", "bearerFormat": "JWT" }
     },
     "schemas": {
       "Error": {
         "type": "object",
         "properties": {
-          "code": {
-            "type": "string",
-            "description": "Error code",
-            "enum": ["insufficient.balance", "locked.player", "error.internal"]
-          },
-          "message": {
-            "type": "string",
-            "description": "Text description error"
-          }
+          "code": { "type": "string", "description": "Error code", "enum": ["insufficient.balance", "locked.player", "error.internal"] },
+          "message": { "type": "string", "description": "Text description error" }
         }
       },
       "GameModel": {
-        "type": "object",
-        "properties": {
-          "code": { "type": "string", "description": "unique game code" },
-          "name": { "type": "string", "description": "game name" },
-          "images":  { "type": "array", "description": "image urls" },
-          "features":  { "type": "array", "description": "game features" },
-          "genres": { "type": "array", "description": "game genres" },
-          "descriptions":  { "type": "object", "description": "game description ( { en: 'text', ua: 'text' } )" },
-          "buyBonusEnabled": { "type": "boolean", "description": "functionality for buying a bonus game" },
-          "freeSpinEnabled": { "type": "boolean", "description": "functionality for free spins" }
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "code": { "type": "string", "description": "unique game code" },
+            "name": { "type": "string", "description": "game name" },
+            "images":  { "type": "array", "description": "image urls" },
+            "features":  { "type": "array", "description": "game features" },
+            "genres": { "type": "array", "description": "game genres" },
+            "descriptions":  { "type": "object", "description": "game description ( { en: 'text', ua: 'text' } )" },
+            "buyBonusEnabled": { "type": "boolean", "description": "functionality for buying a bonus game" },
+            "freeSpinEnabled": { "type": "boolean", "description": "functionality for free spins" }
+          }
         }
       },
       "CreateSessionRequest": {
         "type": "object",
-        "required": [
-          "id", "user", "game", "mode", "currency", "partner"
-        ],
+        "required": ["id", "user", "game", "mode", "currency", "partner"],
         "properties": {
-          "id": {
-            "description": "Unique session id",
-            "type": "string"
-          },
-          "game": {
-            "type": "string",
-            "description": "Unique game code"
-          },
-          "partner": {
-            "type": "string",
-            "description": "Unique partner id"
-          },
-          "user": {
-            "description": "Unique user id",
-            "type": "string"
-          },
-          "mode": {
-            "description": "Game mode for this session",
-            "type": "string",
-            "enum": ["GAME", "DEMO"]
-          },
-          "currency": {
-            "description": "User balance currency",
-            "type": "string",
-            "enum": [
-              "EUR", "USD", "UAH", "KZT"
-            ]
-          },
-          "lang": {
-            "description": "Unique session id",
-            "type": "string",
-            "enum": ["en", "ru", "ua"]
-          },
-          "exit": {
-            "description": "Exit url to partner game lobby",
-            "type": "string"
-          }
+          "id": { "description": "Unique session id", "type": "string" },
+          "game": { "type": "string", "description": "Unique game code" },
+          "partner": { "type": "string", "description": "Unique partner id" },
+          "user": { "description": "Unique user id", "type": "string" },
+          "mode": { "description": "Game mode for this session", "type": "string", "enum": ["GAME", "DEMO"] },
+          "currency": { "description": "User balance currency", "type": "string", "enum": ["EUR", "USD", "UAH", "KZT"] },
+          "lang": { "description": "Unique session id", "type": "string", "enum": ["en", "ru", "ua"] },
+          "exit": { "description": "Exit url to partner game lobby", "type": "string" }
         }
       },
       "CreateSessionResponse": {
         "type": "object",
-        "required": [
-          "createdAt", "link", "id", "closed"
-        ],
+        "required": ["createdAt", "link", "id", "closed"],
         "properties": {
-          "id": {
-            "description": "Session id from partner",
-            "type": "string"
-          },
-          "createdAt": {
-            "type": "string",
-            "description": "Date time to created session"
-          },
-          "link": {
-            "description": "Full link to launch game",
-            "type": "string"
-          },
-
-          "closed": {
-            "description": "Session state",
-            "type": "boolean"
+          "id": { "description": "Session id from partner", "type": "string" },
+          "createdAt": { "type": "string", "description": "Date time to created session" },
+          "link": { "description": "Full link to launch game", "type": "string" },
+          "closed": { "description": "Session state", "type": "boolean" }
+        }
+      },
+      "FreeSpinBetsRequest":{
+        "type": "object",
+        "required": ["game", "partner", "currency"],
+        "properties": {
+          "currency": { "description": "bets currency", "type": "string", "enum": ["EUR", "USD", "UAH", "KZT"] },
+          "partner": { "type": "string", "description": "Unique partner id" },
+          "game": { "type": "string", "description": "Game code" }
+        }
+      },
+      "FreeSpinBetsResponse": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "game": { "type": "string", "description": "Game code" },
+            "currency": { "description": "bets currency", "type": "string", "enum": ["EUR", "USD", "UAH", "KZT"] },
+            "lines": { "type": "integer", "description": "The number of game lines" },
+            "bet": { "type": "number", "description": "Spin bet" }
           }
         }
       },
       "FreeSpinInfoRequest": {
         "type": "object",
-        "required": [
-          "campaignId", "partner", "user"
-        ],
+        "required": ["campaignId", "partner", "user"],
         "properties": {
-          "campaignId": {
-            "type": "string",
-            "description": "Unique campaign id"
-          },
-          "partner": {
-            "type": "string",
-            "description": "Unique partner id"
-          },
-          "user": {
-            "type": "string",
-            "description": "User id"
-          }
+          "campaignId": { "type": "string", "description": "Unique campaign id" },
+          "partner": { "type": "string", "description": "Unique partner id" },
+          "user": { "type": "string", "description": "User id" }
         }
       },
       "CreateFreeSpinRequest": {
         "type": "object",
-        "required": [
-          "campaignId", "partner", "game", "users", "currency", "spinCount", "bet", "toDate"        ],
+        "required": ["campaignId", "partner", "game", "users", "currency", "spinCount", "bet", "toDate"],
         "properties": {
-          "campaignId": {
-            "type": "string",
-            "description": "Unique campaign id"
-          },
-          "partner": {
-            "type": "string",
-            "description": "Unique partner id"
-          },
-          "game": {
-            "type": "string",
-            "description": "Game code"
-          },
-          "users": {
-            "type": "array",
-            "description": "List of user IDs for which free spins will be created (so far only one ID)"
-          },
-          "currency": {
-            "description": "User balance currency",
-            "type": "string",
-            "enum": [
-              "EUR", "USD", "UAH", "KZT"
-            ]
-          },
-          "spinCount": {
-            "type": "integer",
-            "description": "The number of spin"
-          },
-          "lines": {
-            "type": "integer",
-            "description": "The number of game lines"
-          },
-          "bet": {
-            "type": "number",
-            "description": "Spin bet"
-          },
-          "totalBet": {
-            "type": "number",
-            "description": "Total for all spins"
-          },
-          "fromDate": {
-            "type": "string",
-            "format": "yyyy-mm-ddThh:mm:ss",
-            "description": "The date and time of the start of the campaign, by default - now. Format - yyyy-mm-ddThh:mm:ss"
-          },
-          "toDate": {
-            "type": "string",
-            "format": "yyyy-mm-ddThh:mm:ss",
-            "description": "The date and time of the end of the campaign. Format - yyyy-mm-ddThh:mm:ss"
-          }
+          "campaignId": { "type": "string", "description": "Unique campaign id" },
+          "partner": { "type": "string", "description": "Unique partner id" },
+          "game": { "type": "string", "description": "Game code" },
+          "users": { "type": "array", "description": "List of user IDs for which free spins will be created (so far only one ID)" },
+          "currency": { "description": "User balance currency", "type": "string", "enum": ["EUR", "USD", "UAH", "KZT"] },
+          "spinCount": { "type": "integer", "description": "The number of spin" },
+          "lines": { "type": "integer", "description": "The number of game lines" },
+          "bet": { "type": "number", "description": "Spin bet" },
+          "totalBet": { "type": "number", "description": "Total for all spins" },
+          "fromDate": { "type": "string", "format": "yyyy-mm-ddThh:mm:ss", "description": "The date and time of the start of the campaign, by default - now. Format - yyyy-mm-ddThh:mm:ss" },
+          "toDate": { "type": "string", "format": "yyyy-mm-ddThh:mm:ss", "description": "The date and time of the end of the campaign. Format - yyyy-mm-ddThh:mm:ss" }
         }
       },
       "CreateFreeSpinResponse": {
         "type": "object",
         "properties": {
-          "campaignId": {
-            "type": "string",
-            "description": "Unique campaign id"
-          },
-          "partner": {
-            "type": "string",
-            "description": "Unique partner id"
-          },
-          "game": {
-            "type": "string",
-            "description": "Game code"
-          },
-          "user": {
-            "type": "array",
-            "description": "User id"
-          },
-          "currency": {
-            "description": "User balance currency",
-            "type": "string",
-            "enum": [
-              "EUR", "USD", "UAH", "KZT"
-            ]
-          },
-          "spinCount": {
-            "type": "integer",
-            "description": "The number of spin"
-          },
-          "lines": {
-            "type": "integer",
-            "description": "The number of game lines"
-          },
-          "bet": {
-            "type": "number",
-            "description": "Spin bet"
-          },
-          "totalBet": {
-            "type": "number",
-            "description": "Total for all spins"
-          },
-          "fromDate": {
-            "type": "string",
-            "format": "yyyy-mm-ddThh:mm:ss",
-            "description": "The date and time of the start of the campaign. Format - yyyy-mm-ddThh:mm:ss.fff"
-          },
-          "toDate": {
-            "type": "string",
-            "format": "yyyy-mm-ddThh:mm:ss",
-            "description": "The date and time of the end of the campaign. Format - yyyy-mm-ddThh:mm:ss.fff"
-          },
-          "status": {
-            "type": "string",
-            "description": "Campaign status",
-            "enum": [
-              "CURRENT", "EXPIRED", "FINISHED", "CANCELED"
-            ]
-          }
+          "campaignId": { "type": "string", "description": "Unique campaign id" },
+          "partner": { "type": "string", "description": "Unique partner id" },
+          "game": { "type": "string", "description": "Game code" },
+          "user": { "type": "array", "description": "User id" },
+          "currency": { "description": "User balance currency", "type": "string", "enum": ["EUR", "USD", "UAH", "KZT"] },
+          "spinCount": { "type": "integer", "description": "The number of spin" },
+          "lines": { "type": "integer", "description": "The number of game lines" },
+          "bet": { "type": "number", "description": "Spin bet" },
+          "totalBet": { "type": "number", "description": "Total for all spins" },
+          "fromDate": { "type": "string", "format": "yyyy-mm-ddThh:mm:ss", "description": "The date and time of the start of the campaign. Format - yyyy-mm-ddThh:mm:ss.fff" },
+          "toDate": { "type": "string", "format": "yyyy-mm-ddThh:mm:ss", "description": "The date and time of the end of the campaign. Format - yyyy-mm-ddThh:mm:ss.fff" },
+          "status": { "type": "string", "description": "Campaign status", "enum": ["CURRENT", "EXPIRED", "FINISHED", "CANCELED"] }
         }
       },
       "EnterRequest": {
         "type": "object",
-        "required": [
-          "game", "session"
-        ],
+        "required": ["game", "session"],
         "properties": {
-          "game": {
-            "type": "string",
-            "description": "Unique game code"
-          },
-          "session": {
-            "description": "Session id created by /create-session",
-            "type": "string"
-          },
-          "sign": {
-            "description": "digital signature",
-            "type": "string"
-          }
+          "game": { "type": "string", "description": "Unique game code" },
+          "session": { "description": "Session id created by /create-session", "type": "string" },
+          "sign": { "description": "digital signature", "type": "string" }
         }
       },
       "EnterResponse": {
         "type": "object",
         "required": [ "user", "currency", "balance" ],
         "properties": {
-          "user": {
-            "type": "string"
-          },
-          "currency": {
-            "type": "string"
-          },
-          "balance": {
-            "type": "number",
-            "format": "double",
-            "minimum": 0.01
-          }
+          "user": { "type": "string" },
+          "currency": { "type": "string", "enum": ["EUR", "USD", "UAH", "KZT"] },
+          "balance": { "type": "number", "format": "double", "minimum": 0.01 }
         }
       },
       "BalanceRequest": {
         "type": "object",
         "required": ["session"],
         "properties": {
-          "session": {
-            "type": "string"
-          },
-          "sign": {
-            "description": "digital signature",
-            "type": "string"
-          }
+          "session": { "type": "string" },
+          "sign": { "description": "digital signature", "type": "string" }
         }
       },
       "BalanceResponse": {
         "type": "object",
         "required": ["currency", "balance"],
         "properties": {
-          "currency": {
-            "type": "string"
-          },
-          "balance": {
-            "type": "string"
-          }
+          "currency": { "type": "string", "enum": ["EUR", "USD", "UAH", "KZT"] },
+          "balance": { "type": "number", "format": "double", "minimum": 0.01 }
         }
       },
       "BetRequest": {
         "type": "object",
         "properties": {
-          "session": {
-            "type": "string"
-          },
-          "user": {
-            "type": "string"
-          },
-          "amount": {
-            "type": "number",
-            "format": "double",
-            "minimum": 0.01
-          },
+          "session": { "type": "string" },
+          "user": { "type": "string" },
+          "amount": { "type": "number", "format": "double", "minimum": 0.01 },
           "game": { "type": "string" },
           "transactionId": { "type": "string" },
           "round": { "type": "string" },
           "finished": { "type": "boolean" },
-          "type": {
-            "type": "string",
-            "enum": ["real", "free_spin"]
-          },
+          "type": { "type": "string", "enum": ["real", "free_spin"] },
           "freeSpinCampaignId": { "type": "string", "nullable": true },
           "freeSpinFinished": { "type": "boolean", "nullable": true },
           "freeSpinWin": { "type": "number", "format": "double", "nullable": true },
-          "sign": {
-            "description": "digital signature",
-            "type": "string"
-          }
+          "sign": { "description": "digital signature", "type": "string" }
         }
       },
       "BetResponse": {
         "type": "object",
         "required": ["balance"],
         "properties": {
-          "balance": {
-            "description": "Actually user balance after operation",
-            "type": "string"
-          },
-          "transactionId": {
-            "description": "Client local transaction id",
-            "type": "string"
-          }
+          "balance": { "description": "Actually user balance after operation", "type": "string" },
+          "transactionId": { "description": "Client local transaction id", "type": "string" }
         }
       },
       "WinRequest": {
         "type": "object",
         "properties": {
-          "session": {
-            "type": "string"
-          },
-          "user": {
-            "type": "string"
-          },
-          "amount": {
-            "type": "number",
-            "format": "double",
-            "minimum": 0.01
-          },
+          "session": { "type": "string" },
+          "user": { "type": "string" },
+          "amount": { "type": "number", "format": "double", "minimum": 0.01 },
           "game": { "type": "string" },
           "transactionId": { "type": "string" },
           "round": { "type": "string" },
           "finished": { "type": "boolean" },
-          "type": {
-            "type": "string",
-            "enum": ["real", "free_spin"]
-          },
+          "type": { "type": "string", "enum": ["real", "free_spin"]},
           "freeSpinCampaignId": { "type": "string", "nullable": true },
           "freeSpinFinished": { "type": "boolean", "nullable": true },
           "freeSpinWin": { "type": "number", "format": "double", "nullable": true },
-          "sign": {
-            "description": "digital signature",
-            "type": "string"
-          }
+          "sign": { "description": "digital signature", "type": "string" }
         }
       },
       "WinResponse": {
         "type": "object",
         "required": ["balance"],
         "properties": {
-          "balance": {
-            "description": "Actually user balance after operation",
-            "type": "string"
-          },
-          "transactionId": {
-            "description": "Client local transaction id",
-            "type": "string"
-          }
+          "balance": { "description": "Actually user balance after operation", "type": "string" },
+          "transactionId": { "description": "Client local transaction id", "type": "string" }
         }
       },
       "RefundRequest": {
         "type": "object",
         "properties": {
-          "session": {
-            "type": "string"
-          },
-          "user": {
-            "type": "string"
-          },
-          "amount": {
-            "type": "number",
-            "format": "double",
-            "minimum": 0.01
-          },
+          "session": { "type": "string" },
+          "user": { "type": "string" },
+          "amount": { "type": "number", "format": "double", "minimum": 0.01 },
           "game": { "type": "string" },
           "transactionId": { "type": "string" },
           "round": { "type": "string" },
           "betTransactionId": { "type": "string" },
-          "sign": {
-            "description": "digital signature",
-            "type": "string"
-          }
+          "sign": { "description": "digital signature", "type": "string" }
         }
       },
       "RefundResponse": {
         "type": "object",
         "required": ["balance"],
         "properties": {
-          "balance": {
-            "description": "Actually user balance after operation",
-            "type": "string"
-          },
-          "transactionId": {
-            "description": "Client local transaction id",
-            "type": "string"
-          }
+          "balance": { "description": "Actually user balance after operation", "type": "string" },
+          "transactionId": { "description": "Client local transaction id", "type": "string" }
         }
       }
     }
