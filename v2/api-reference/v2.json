@@ -141,7 +141,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/ErrorAPI"
                 }
               }
             }
@@ -182,7 +182,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/ErrorAPI"
                 }
               }
             }
@@ -223,7 +223,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/ErrorAPI"
                 }
               }
             }
@@ -264,7 +264,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/ErrorAPI"
                 }
               }
             }
@@ -305,7 +305,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/ErrorAPI"
                 }
               }
             }
@@ -326,12 +326,12 @@
           }
         },
         "responses": {
-          "400": {
+          "422": {
             "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/Error2"
                 }
               }
             }
@@ -372,12 +372,12 @@
               }
             }
           },
-          "400": {
+          "422": {
             "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/Error2"
                 }
               }
             }
@@ -444,12 +444,12 @@
               }
             }
           },
-          "400": {
+          "422": {
             "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/Error2"
                 }
               }
             }
@@ -480,12 +480,12 @@
               }
             }
           },
-          "400": {
+          "422": {
             "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/Error2"
                 }
               }
             }
@@ -499,10 +499,24 @@
       "bearerAuth": { "type": "http", "scheme": "bearer", "bearerFormat": "JWT" }
     },
     "schemas": {
+      "ErrorAPI": {
+        "type": "object",
+        "properties": {
+          "code": { "type": "string", "description": "Error code", "enum": ["error.internal"] },
+          "message": { "type": "string", "description": "Text description error" }
+        }
+      },
       "Error": {
         "type": "object",
         "properties": {
           "code": { "type": "string", "description": "Error code", "enum": ["insufficient.balance", "locked.player", "error.internal"] },
+          "message": { "type": "string", "description": "Text description error" }
+        }
+      },
+      "Error2": {
+        "type": "object",
+        "properties": {
+          "code": { "type": "string", "description": "Error code", "enum": ["locked.player", "error.internal", "insufficient.balance"] },
           "message": { "type": "string", "description": "Text description error" }
         }
       },
